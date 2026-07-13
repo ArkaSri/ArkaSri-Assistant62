@@ -41,7 +41,9 @@ if api_key:
             pdf = FPDF()
             pdf.add_page()
             pdf.set_font("Arial", size=12)
-            pdf.multi_cell(0, 10, txt=response.encode('latin-1', 'replace').decode('latin-1'))
+            # Menangani karakter khusus agar tidak error
+            safe_response = response.encode('latin-1', 'replace').decode('latin-1')
+            pdf.multi_cell(0, 10, txt=safe_response)
             pdf_output = pdf.output(dest='S').encode('latin-1')
             
             st.download_button(
@@ -49,3 +51,6 @@ if api_key:
                 data=pdf_output,
                 file_name="Hasil_ArkaSri.pdf",
                 mime="application/pdf"
+            )
+else:
+    st.info("Bunda, silakan masukkan API Key di sidebar sebelah kiri ya.")
